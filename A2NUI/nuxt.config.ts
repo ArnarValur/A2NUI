@@ -2,7 +2,9 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
-    '@nuxt/ui'
+    '@nuxt/image',
+    '@nuxt/ui',
+    '@nuxt/content'
   ],
 
   devtools: {
@@ -15,8 +17,26 @@ export default defineNuxtConfig({
     geminiApiKey: process.env.GEMINI_API_KEY ?? ''
   },
 
-  routeRules: {
-    '/': { prerender: true }
+  content: {
+    build: {
+      markdown: {
+        toc: {
+          searchDepth: 1
+        }
+      }
+    }
+  },
+
+  nitro: {
+    prerender: {
+      routes: ['/'],
+      crawlLinks: true,
+      autoSubfolderIndex: false
+    }
+  },
+
+  icon: {
+    provider: 'iconify'
   },
 
   compatibilityDate: '2025-01-15',

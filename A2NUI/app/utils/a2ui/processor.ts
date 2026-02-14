@@ -74,22 +74,36 @@ export function processMessage(
 }
 
 /**
- * Parse a JSONL string (potentially multiple lines) into individual messages.
+ * Parse a JSONL string into individual messages.
+ *
+ * Supports both strict JSONL (one JSON object per line) and pretty-printed
+ * JSON that spans multiple lines. Uses a buffer to accumulate lines until
+ * a valid JSON object is parsed.
  */
 export function parseJsonl(text: string): A2uiEnvelope[] {
   const messages: A2uiEnvelope[] = []
+  let buffer = ''
+
   for (const line of text.split('\n')) {
     const trimmed = line.trim()
-    if (!trimmed) continue
+
+    // Skip empty lines and markdown code fences
+    if (!trimmed || trimmed.startsWith('```')) continue
+
+    buffer += (buffer ? '\n' : '') + trimmed
+
+    // Try to parse the accumulated buffer as JSON
     try {
-      const parsed = JSON.parse(trimmed) as A2uiEnvelope
+      const parsed = JSON.parse(buffer) as A2uiEnvelope
       if (parsed.version === 'v0.10') {
         messages.push(parsed)
       }
+      buffer = '' // Reset buffer after successful parse
     } catch {
-      // Skip malformed lines — expected during streaming
+      // Not yet valid JSON — keep accumulating
     }
   }
+
   return messages
 }
 
@@ -153,13 +167,23 @@ function buildNode(
     })
   }
 
-  // Resolve entryPointChild and contentChild (Modal)
+  // Resolve entryPointChild and contentChild (Modal — legacy names)
   if (typeof properties.entryPointChild === 'string' && surface.components.has(properties.entryPointChild)) {
     const node = buildNode(properties.entryPointChild, surface, visited, dataContextPath)
     if (node) properties.entryPointNode = node
   }
   if (typeof properties.contentChild === 'string' && surface.components.has(properties.contentChild)) {
     const node = buildNode(properties.contentChild, surface, visited, dataContextPath)
+    if (node) properties.contentNode = node
+  }
+
+  // Resolve trigger and content (Modal — v0.10 spec names)
+  if (typeof properties.trigger === 'string' && surface.components.has(properties.trigger)) {
+    const node = buildNode(properties.trigger, surface, visited, dataContextPath)
+    if (node) properties.triggerNode = node
+  }
+  if (typeof properties.content === 'string' && surface.components.has(properties.content)) {
+    const node = buildNode(properties.content, surface, visited, dataContextPath)
     if (node) properties.contentNode = node
   }
 
@@ -224,13 +248,14 @@ function setByPath(obj: Record<string, unknown>, path: string, value: unknown): 
 
   let current: Record<string, unknown> = obj
   for (let i = 0; i < segments.length - 1; i++) {
-    const seg = segments[i]
+    const seg = segments[i]!
     if (!(seg in current) || typeof current[seg] !== 'object' || current[seg] === null) {
       current[seg] = {}
     }
     current = current[seg] as Record<string, unknown>
   }
-  current[segments[segments.length - 1]] = value
+  const lastSeg = segments[segments.length - 1]!
+  current[lastSeg] = value
 }
 
 function normalizePath(path: string): string {

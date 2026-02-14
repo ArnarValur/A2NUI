@@ -222,9 +222,9 @@ const chatUiMessages = computed(() => {
             <UButton
               v-for="suggestion in [
                 'Build me a contact form',
-                'Create a user profile card',
-                'Show a settings panel with toggles',
-                'Make a pricing table with 3 tiers'
+                'Create a settings panel with a volume slider, theme picker, and notifications toggle',
+                'Build a user profile card with tabs for Info, Posts, and Settings',
+                'Make a booking form with date picker, time selection, and a modal confirmation'
               ]"
               :key="suggestion"
               :label="suggestion"

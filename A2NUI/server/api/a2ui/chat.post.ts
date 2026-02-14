@@ -25,17 +25,33 @@ When the user asks you to build a UI, respond with valid A2UI JSONL (one JSON ob
 
 Each component is an object with "id", "component" (type name), and type-specific properties:
 
+### Display
 - **Text**: { id, component: "Text", text: "string", variant?: "h1"|"h2"|"h3"|"h4"|"h5"|"body"|"caption" }
-- **Button**: { id, component: "Button", label: "string", variant?: "primary"|"outline"|"ghost", action?: { event: { name: "string" } } }
-- **TextField**: { id, component: "TextField", label: "string", placeholder?: "string", variant?: "shortText"|"longText" }
-- **CheckBox**: { id, component: "CheckBox", label: "string", value: boolean }
-- **Image**: { id, component: "Image", url: "string", alt?: "string" }
+- **Image**: { id, component: "Image", url: "string", alt?: "string", fit?: "contain"|"cover"|"fill", variant?: "icon"|"avatar"|"smallFeature"|"mediumFeature"|"largeFeature"|"header" }
 - **Icon**: { id, component: "Icon", icon: "string" }
-- **Row**: { id, component: "Row", children: ["child_id_1", "child_id_2"], gap?: number }
-- **Column**: { id, component: "Column", children: ["child_id_1", "child_id_2"], gap?: number }
+- **Video**: { id, component: "Video", url: "string" }
+- **AudioPlayer**: { id, component: "AudioPlayer", url: "string", description?: "string" }
+
+### Layout
+- **Row**: { id, component: "Row", children: ["child_id_1", "child_id_2"], gap?: number, justify?: "start"|"center"|"end"|"spaceBetween"|"spaceAround"|"spaceEvenly", align?: "start"|"center"|"end"|"stretch" }
+- **Column**: { id, component: "Column", children: ["child_id_1", "child_id_2"], gap?: number, justify?: "start"|"center"|"end"|"spaceBetween", align?: "start"|"center"|"end"|"stretch" }
+- **List**: { id, component: "List", children: ["child_id_1", "child_id_2"], direction?: "vertical"|"horizontal", align?: "start"|"center"|"end"|"stretch" }
 - **Card**: { id, component: "Card", child: "child_id", title?: "string" }
-- **Divider**: { id, component: "Divider" }
 - **Tabs**: { id, component: "Tabs", tabItems: [{ title: "Tab 1", child: "child_id" }] }
+- **Divider**: { id, component: "Divider" }
+
+### Overlay
+- **Modal**: { id, component: "Modal", trigger: "trigger_child_id", content: "content_child_id" }
+
+### Interactive
+- **Button**: { id, component: "Button", label: "string", variant?: "primary"|"outline"|"ghost", action?: { event: { name: "string" } } }
+
+### Input
+- **TextField**: { id, component: "TextField", label: "string", placeholder?: "string", variant?: "shortText"|"longText"|"number"|"obscured" }
+- **CheckBox**: { id, component: "CheckBox", label: "string", value: boolean }
+- **ChoicePicker**: { id, component: "ChoicePicker", options: [{ label: "Option 1", value: "opt1" }], value: ["opt1"], variant?: "mutuallyExclusive"|"multipleSelection", label?: "string" }
+- **Slider**: { id, component: "Slider", value: 50, min: 0, max: 100, label?: "string" }
+- **DateTimeInput**: { id, component: "DateTimeInput", value: "", enableDate?: true, enableTime?: false, min?: "2026-01-01", max?: "2026-12-31", label?: "string" }
 
 ## Rules
 1. Each JSON line must be a complete, valid JSON object — no partial objects
@@ -50,6 +66,11 @@ Each component is an object with "id", "component" (type name), and type-specifi
 
 {"version":"v0.10","createSurface":{"surfaceId":"contact_form","catalogId":"standard"}}
 {"version":"v0.10","updateComponents":{"surfaceId":"contact_form","components":[{"id":"root","component":"Column","children":["title","name_field","email_field","message_field","submit_btn"]},{"id":"title","component":"Text","text":"Contact Us","variant":"h2"},{"id":"name_field","component":"TextField","label":"Name","placeholder":"Enter your name"},{"id":"email_field","component":"TextField","label":"Email","placeholder":"you@example.com"},{"id":"message_field","component":"TextField","label":"Message","placeholder":"How can we help?","variant":"longText"},{"id":"submit_btn","component":"Button","label":"Send Message","variant":"primary"}]}}
+
+## Example: Settings Panel with Slider and Choice
+
+{"version":"v0.10","createSurface":{"surfaceId":"settings","catalogId":"standard"}}
+{"version":"v0.10","updateComponents":{"surfaceId":"settings","components":[{"id":"root","component":"Column","children":["title","volume_slider","theme_picker","notify_check"]},{"id":"title","component":"Text","text":"Settings","variant":"h2"},{"id":"volume_slider","component":"Slider","label":"Volume","value":75,"min":0,"max":100},{"id":"theme_picker","component":"ChoicePicker","label":"Theme","options":[{"label":"Light","value":"light"},{"label":"Dark","value":"dark"},{"label":"System","value":"system"}],"value":["dark"],"variant":"mutuallyExclusive"},{"id":"notify_check","component":"CheckBox","label":"Enable notifications","value":true}]}}
 
 When the user asks a question that is NOT about building a UI, just respond with a text-only surface:
 {"version":"v0.10","createSurface":{"surfaceId":"response","catalogId":"standard"}}
