@@ -9,6 +9,7 @@ const { header } = useAppConfig()
   <UHeader
     :ui="{ center: 'flex-1' }"
     :to="header?.to || '/'"
+    class="backdrop-blur-xl bg-default/70! border-b border-primary/10!"
   >
     <UContentSearchButton
       v-if="header?.search"
@@ -20,8 +21,8 @@ const { header } = useAppConfig()
       v-if="header?.title"
       #title
     >
-      <span class="font-bold">
-        <span class="text-primary">A2N</span><span>UI</span>
+      <span class="font-bold group">
+        <span class="text-primary transition-all duration-300 group-hover:gradient-text">A2N</span><span>UI</span>
       </span>
     </template>
 

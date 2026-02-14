@@ -24,6 +24,8 @@ import A2uiVideo from "~/components/a2ui/Video.vue";
 import A2uiAudioPlayer from "~/components/a2ui/AudioPlayer.vue";
 import A2uiList from "~/components/a2ui/List.vue";
 import A2uiModal from "~/components/a2ui/Modal.vue";
+import A2uiSlideover from "~/components/a2ui/Slideover.vue";
+import A2uiTable from "~/components/a2ui/Table.vue";
 import A2uiChoicePicker from "~/components/a2ui/ChoicePicker.vue";
 import A2uiSlider from "~/components/a2ui/Slider.vue";
 import A2uiDateTimeInput from "~/components/a2ui/DateTimeInput.vue";
@@ -51,6 +53,8 @@ const componentMap: Record<string, Component> = {
   AudioPlayer: A2uiAudioPlayer,
   List: A2uiList,
   Modal: A2uiModal,
+  Slideover: A2uiSlideover,
+  Table: A2uiTable,
   ChoicePicker: A2uiChoicePicker,
   Slider: A2uiSlider,
   DateTimeInput: A2uiDateTimeInput,

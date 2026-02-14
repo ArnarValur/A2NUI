@@ -21,7 +21,7 @@ export default defineAppConfig({
     colorMode: true,
     links: [{
       'icon': 'i-simple-icons-github',
-      'to': 'https://github.com/AvaBliss/A2NUI',
+      'to': 'https://github.com/ArnarValur/A2NUI',
       'target': '_blank',
       'aria-label': 'GitHub'
     }]
@@ -32,7 +32,7 @@ export default defineAppConfig({
     colorMode: false,
     links: [{
       'icon': 'i-simple-icons-github',
-      'to': 'https://github.com/AvaBliss/A2NUI',
+      'to': 'https://github.com/ArnarValur/A2NUI',
       'target': '_blank',
       'aria-label': 'A2NUI on GitHub'
     }]

@@ -6,3 +6,9 @@ Nuxt Docs/*Nuxt-Docs-Template/
 Nuxt Docs/
 Nuxt UI*/
 A2UI Repo*/
+
+# Dev-only / agent files
+.agent/
+conductor/
+.docs*/
+*.code-workspace
