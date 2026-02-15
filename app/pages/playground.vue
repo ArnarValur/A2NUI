@@ -1,11 +1,9 @@
 <script setup lang="ts">
 /**
- * A2NUI Playground — AI Chat with live A2UI rendering
+ * A2NUI Playground — Multi-Provider AI Chat with live A2UI rendering
  *
- * Three tabs:
- * 1. Chat — Talk to Gemini, it responds with A2UI surfaces rendered inline
- * 2. Paste — Paste raw JSONL to test renderer directly
- * 3. Inspect — View current surface state and data model
+ * BYOK (Bring Your Own Key) — supports Gemini, OpenAI, and Anthropic.
+ * Three tabs: Chat, Paste, Inspect.
  */
 import { useA2uiSurface } from '~/composables/useA2uiSurface'
 
@@ -16,12 +14,85 @@ useHead({ title: 'A2NUI Playground' })
 // --- A2UI Processor ---
 const { surfaces, feed, clear: clearSurfaces } = useA2uiSurface()
 
+// --- BYOK Provider Config ---
+type Provider = 'gemini' | 'openai' | 'anthropic'
+
+const providers = [
+  { label: 'Gemini', value: 'gemini' as Provider, icon: 'i-simple-icons-google' },
+  { label: 'OpenAI', value: 'openai' as Provider, icon: 'i-simple-icons-openai' },
+  { label: 'Anthropic', value: 'anthropic' as Provider, icon: 'i-lucide-bot' }
+]
+
+const modelsByProvider: Record<Provider, Array<{ label: string, value: string }>> = {
+  gemini: [
+    { label: 'Gemini 2.0 Flash', value: 'gemini-2.0-flash' },
+    { label: 'Gemini 2.5 Flash', value: 'gemini-2.5-flash-preview-05-20' },
+    { label: 'Gemini 2.5 Pro', value: 'gemini-2.5-pro-preview-05-06' }
+  ],
+  openai: [
+    { label: 'GPT-4o Mini', value: 'gpt-4o-mini' },
+    { label: 'GPT-4o', value: 'gpt-4o' },
+    { label: 'GPT-4.1 Mini', value: 'gpt-4.1-mini' },
+    { label: 'GPT-4.1', value: 'gpt-4.1' }
+  ],
+  anthropic: [
+    { label: 'Claude Haiku 3.5', value: 'claude-3-5-haiku-20241022' },
+    { label: 'Claude Sonnet 4', value: 'claude-sonnet-4-20250514' }
+  ]
+}
+
+const selectedProvider = ref<Provider>('gemini')
+const selectedModel = ref('gemini-2.0-flash')
+const apiKey = ref('')
+const settingsOpen = ref(true)
+
+// Persist provider + model in localStorage, key in sessionStorage (tab-scoped)
+if (import.meta.client) {
+  const saved = localStorage.getItem('a2nui-provider')
+  if (saved && ['gemini', 'openai', 'anthropic'].includes(saved)) {
+    selectedProvider.value = saved as Provider
+    const savedModel = localStorage.getItem('a2nui-model')
+    selectedModel.value = savedModel || modelsByProvider[saved as Provider]![0]!.value
+  }
+  const savedKey = sessionStorage.getItem('a2nui-key')
+  if (savedKey) {
+    apiKey.value = savedKey
+    settingsOpen.value = false
+  }
+}
+
+watch(selectedProvider, (p) => {
+  selectedModel.value = modelsByProvider[p]![0]!.value
+  if (import.meta.client) {
+    localStorage.setItem('a2nui-provider', p)
+  }
+})
+
+watch(selectedModel, (m) => {
+  if (import.meta.client) {
+    localStorage.setItem('a2nui-model', m)
+  }
+})
+
+watch(apiKey, (k) => {
+  if (import.meta.client) {
+    if (k.trim()) {
+      sessionStorage.setItem('a2nui-key', k)
+    } else {
+      sessionStorage.removeItem('a2nui-key')
+    }
+  }
+})
+
+const availableModels = computed(() => modelsByProvider[selectedProvider.value])
+const hasApiKey = computed(() => apiKey.value.trim().length > 0)
+
 // --- Chat State ---
 interface ChatMessage {
   id: string
   role: 'user' | 'assistant'
   content: string
-  surfaces?: string[] // surfaceIds generated in this message
+  surfaces?: string[]
 }
 
 const messages = ref<ChatMessage[]>([])
@@ -45,7 +116,11 @@ const tabs = [
 const sidebarOpen = ref(false)
 
 const supportedComponents = [
+  { name: 'Accordion', icon: 'i-lucide-chevrons-down-up', category: 'Data' },
+  { name: 'Alert', icon: 'i-lucide-alert-triangle', category: 'Element' },
   { name: 'AudioPlayer', icon: 'i-lucide-volume-2', category: 'Media' },
+  { name: 'Avatar', icon: 'i-lucide-circle-user', category: 'Element' },
+  { name: 'Badge', icon: 'i-lucide-tag', category: 'Element' },
   { name: 'Button', icon: 'i-lucide-mouse-pointer-click', category: 'Element' },
   { name: 'Card', icon: 'i-lucide-credit-card', category: 'Layout' },
   { name: 'CheckBox', icon: 'i-lucide-square-check', category: 'Form' },
@@ -57,13 +132,17 @@ const supportedComponents = [
   { name: 'Image', icon: 'i-lucide-image', category: 'Media' },
   { name: 'List', icon: 'i-lucide-list-ordered', category: 'Data' },
   { name: 'Modal', icon: 'i-lucide-app-window', category: 'Overlay' },
+  { name: 'Progress', icon: 'i-lucide-loader', category: 'Element' },
   { name: 'Row', icon: 'i-lucide-rows-2', category: 'Layout' },
   { name: 'Slideover', icon: 'i-lucide-panel-right', category: 'Overlay' },
   { name: 'Slider', icon: 'i-lucide-sliders-horizontal', category: 'Form' },
+  { name: 'Skeleton', icon: 'i-lucide-bone', category: 'Element' },
+  { name: 'Stepper', icon: 'i-lucide-footprints', category: 'Navigation' },
   { name: 'Table', icon: 'i-lucide-table', category: 'Data' },
   { name: 'Tabs', icon: 'i-lucide-panel-top', category: 'Navigation' },
   { name: 'Text', icon: 'i-lucide-type', category: 'Element' },
   { name: 'TextField', icon: 'i-lucide-text-cursor-input', category: 'Form' },
+  { name: 'Timeline', icon: 'i-lucide-git-branch', category: 'Data' },
   { name: 'Video', icon: 'i-lucide-video', category: 'Media' }
 ]
 
@@ -110,7 +189,12 @@ async function handleSubmit() {
     const response = await fetch('/api/a2ui/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: apiMessages })
+      body: JSON.stringify({
+        provider: selectedProvider.value,
+        apiKey: apiKey.value,
+        model: selectedModel.value,
+        messages: apiMessages
+      })
     })
 
     if (!response.ok) {
@@ -222,7 +306,7 @@ const chatUiMessages = computed(() => {
 
 <template>
   <div class="flex flex-col h-[calc(100vh-var(--header-height,64px))] overflow-hidden">
-    <!-- Tab Navigation + Sidebar Toggle -->
+    <!-- Tab Navigation + Controls -->
     <div class="border-b border-default px-4 flex items-center">
       <UTabs
         v-model="activeTab"
@@ -233,6 +317,13 @@ const chatUiMessages = computed(() => {
       <div class="flex items-center gap-2 ml-2">
         <UBadge label="v0.10" variant="subtle" size="sm" />
         <UButton
+          :icon="settingsOpen ? 'i-lucide-settings' : 'i-lucide-settings'"
+          :color="hasApiKey ? 'neutral' : 'error'"
+          :variant="settingsOpen ? 'soft' : 'ghost'"
+          size="sm"
+          @click="settingsOpen = !settingsOpen"
+        />
+        <UButton
           :icon="sidebarOpen ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
           color="neutral"
           variant="ghost"
@@ -241,6 +332,48 @@ const chatUiMessages = computed(() => {
         />
       </div>
     </div>
+
+    <!-- API Settings Bar -->
+    <Transition name="settings">
+      <div v-if="settingsOpen" class="border-b border-default px-4 py-2 bg-elevated/50">
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-medium text-muted">Provider</span>
+            <USelectMenu
+              v-model="selectedProvider"
+              :items="providers"
+              value-key="value"
+              class="w-36"
+              size="xs"
+            />
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-medium text-muted">Model</span>
+            <USelectMenu
+              v-model="selectedModel"
+              :items="availableModels"
+              value-key="value"
+              class="w-48"
+              size="xs"
+            />
+          </div>
+          <div class="flex items-center gap-2 flex-1 min-w-48">
+            <span class="text-xs font-medium text-muted whitespace-nowrap">API Key</span>
+            <UInput
+              v-model="apiKey"
+              type="password"
+              placeholder="Paste your API key here"
+              size="xs"
+              class="flex-1"
+              :color="hasApiKey ? 'neutral' : 'error'"
+            />
+          </div>
+          <div class="text-xs text-muted">
+            <UIcon :name="hasApiKey ? 'i-lucide-check-circle' : 'i-lucide-alert-circle'" :class="hasApiKey ? 'text-green-500' : 'text-red-400'" class="size-3.5" />
+          </div>
+        </div>
+      </div>
+    </Transition>
 
     <!-- Main Content + Sidebar -->
     <div class="flex-1 flex min-h-0">
@@ -258,7 +391,10 @@ const chatUiMessages = computed(() => {
               <div>
                 <h2 class="text-xl font-semibold mb-1">A2NUI Playground</h2>
                 <p class="text-muted text-sm max-w-md">
-                  Ask Gemini to build you a UI. It will respond with A2UI JSONL that renders live using Nuxt UI components.
+                  Ask any LLM to build you a UI. It responds with A2UI JSONL that renders live using Nuxt UI components.
+                </p>
+                <p v-if="!hasApiKey" class="text-red-400 text-xs mt-2">
+                  ⚠ Paste your API key in the settings bar above to get started.
                 </p>
               </div>
               <div class="flex flex-wrap gap-2 justify-center max-w-lg">
@@ -273,6 +409,7 @@ const chatUiMessages = computed(() => {
                   :label="suggestion"
                   variant="outline"
                   size="sm"
+                  :disabled="!hasApiKey"
                   @click="input = suggestion"
                 />
               </div>
@@ -345,7 +482,7 @@ const chatUiMessages = computed(() => {
                 type="submit"
                 icon="i-lucide-arrow-up"
                 :loading="status === 'submitted' || status === 'streaming'"
-                :disabled="!input.trim() || status === 'submitted' || status === 'streaming'"
+                :disabled="!input.trim() || !hasApiKey || status === 'submitted' || status === 'streaming'"
                 size="lg"
               />
             </form>
@@ -477,6 +614,17 @@ const chatUiMessages = computed(() => {
 .sidebar-enter-from,
 .sidebar-leave-to {
   width: 0;
+  opacity: 0;
+}
+.settings-enter-active,
+.settings-leave-active {
+  transition: max-height 0.2s ease, opacity 0.15s ease;
+  overflow: hidden;
+  max-height: 60px;
+}
+.settings-enter-from,
+.settings-leave-to {
+  max-height: 0;
   opacity: 0;
 }
 </style>

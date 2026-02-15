@@ -1,8 +1,10 @@
 /**
- * Gemini A2UI Server Route
+ * Multi-Provider A2UI Chat — BYOK (Bring Your Own Key)
  *
- * Receives a chat message, sends it to Gemini with the A2UI system prompt,
- * and streams the JSONL response back to the client via SSE.
+ * Accepts provider, apiKey, model, and messages from the client.
+ * Routes to the correct LLM API and streams A2UI JSONL back via SSE.
+ *
+ * Supported providers: gemini, openai, anthropic
  */
 import { GoogleGenAI } from '@google/genai'
 
@@ -76,43 +78,24 @@ When the user asks a question that is NOT about building a UI, just respond with
 {"version":"v0.10","createSurface":{"surfaceId":"response","catalogId":"standard"}}
 {"version":"v0.10","updateComponents":{"surfaceId":"response","components":[{"id":"root","component":"Column","children":["text"]},{"id":"text","component":"Text","text":"<your answer here>"}]}}`
 
-export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiKey = config.geminiApiKey
+interface ChatRequest {
+  provider: 'gemini' | 'openai' | 'anthropic'
+  apiKey: string
+  model: string
+  messages: Array<{ role: string, content: string }>
+}
 
-  if (!apiKey) {
-    throw createError({
-      statusCode: 500,
-      message: 'GEMINI_API_KEY not configured. Add it to your .env file.'
-    })
-  }
-
-  const body = await readBody<{ messages: Array<{ role: string, content: string }> }>(event)
-
-  if (!body.messages || !Array.isArray(body.messages)) {
-    throw createError({
-      statusCode: 400,
-      message: 'Request body must contain a "messages" array.'
-    })
-  }
-
+// --- Gemini streaming ---
+async function streamGemini(apiKey: string, model: string, messages: ChatRequest['messages']) {
   const ai = new GoogleGenAI({ apiKey })
 
-  // Build content parts from conversation history
-  const contents = body.messages.map(msg => ({
+  const contents = messages.map(msg => ({
     role: msg.role === 'user' ? 'user' as const : 'model' as const,
     parts: [{ text: msg.content }]
   }))
 
-  // Set SSE headers
-  setResponseHeaders(event, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive'
-  })
-
   const response = await ai.models.generateContentStream({
-    model: 'gemini-2.0-flash',
+    model,
     config: {
       systemInstruction: A2UI_SYSTEM_PROMPT,
       temperature: 0.7,
@@ -121,9 +104,8 @@ export default defineEventHandler(async (event) => {
     contents
   })
 
-  // Stream chunks as SSE
   const encoder = new TextEncoder()
-  const stream = new ReadableStream({
+  return new ReadableStream({
     async start(controller) {
       try {
         for await (const chunk of response) {
@@ -135,12 +117,183 @@ export default defineEventHandler(async (event) => {
         controller.enqueue(encoder.encode('data: [DONE]\n\n'))
         controller.close()
       } catch (error) {
-        console.error('[A2UI Gemini] Stream error:', error)
         controller.enqueue(encoder.encode(`data: ${JSON.stringify({ error: String(error) })}\n\n`))
         controller.close()
       }
     }
   })
+}
+
+// --- OpenAI-compatible streaming (works for OpenAI, etc.) ---
+async function streamOpenAI(apiKey: string, model: string, messages: ChatRequest['messages']) {
+  const apiMessages = [
+    { role: 'system', content: A2UI_SYSTEM_PROMPT },
+    ...messages.map(m => ({ role: m.role, content: m.content }))
+  ]
+
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model,
+      messages: apiMessages,
+      stream: true,
+      temperature: 0.7,
+      max_tokens: 4096
+    })
+  })
+
+  if (!res.ok) {
+    const err = await res.text()
+    throw new Error(`OpenAI API error ${res.status}: ${err}`)
+  }
+
+  const reader = res.body!.getReader()
+  const decoder = new TextDecoder()
+  const encoder = new TextEncoder()
+
+  return new ReadableStream({
+    async start(controller) {
+      let buffer = ''
+      try {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          buffer += decoder.decode(value, { stream: true })
+
+          const lines = buffer.split('\n')
+          buffer = lines.pop() ?? ''
+
+          for (const line of lines) {
+            const trimmed = line.trim()
+            if (!trimmed || !trimmed.startsWith('data: ')) continue
+            const data = trimmed.slice(6)
+            if (data === '[DONE]') continue
+
+            try {
+              const parsed = JSON.parse(data)
+              const text = parsed.choices?.[0]?.delta?.content ?? ''
+              if (text) {
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text })}\n\n`))
+              }
+            } catch { /* skip malformed */ }
+          }
+        }
+        controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+        controller.close()
+      } catch (error) {
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ error: String(error) })}\n\n`))
+        controller.close()
+      }
+    }
+  })
+}
+
+// --- Anthropic streaming ---
+async function streamAnthropic(apiKey: string, model: string, messages: ChatRequest['messages']) {
+  const apiMessages = messages.map(m => ({
+    role: m.role === 'user' ? 'user' : 'assistant',
+    content: m.content
+  }))
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01'
+    },
+    body: JSON.stringify({
+      model,
+      system: A2UI_SYSTEM_PROMPT,
+      messages: apiMessages,
+      stream: true,
+      max_tokens: 4096,
+      temperature: 0.7
+    })
+  })
+
+  if (!res.ok) {
+    const err = await res.text()
+    throw new Error(`Anthropic API error ${res.status}: ${err}`)
+  }
+
+  const reader = res.body!.getReader()
+  const decoder = new TextDecoder()
+  const encoder = new TextEncoder()
+
+  return new ReadableStream({
+    async start(controller) {
+      let buffer = ''
+      try {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          buffer += decoder.decode(value, { stream: true })
+
+          const lines = buffer.split('\n')
+          buffer = lines.pop() ?? ''
+
+          for (const line of lines) {
+            const trimmed = line.trim()
+            if (!trimmed || !trimmed.startsWith('data: ')) continue
+            const data = trimmed.slice(6)
+
+            try {
+              const parsed = JSON.parse(data)
+              if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: parsed.delta.text })}\n\n`))
+              }
+            } catch { /* skip */ }
+          }
+        }
+        controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+        controller.close()
+      } catch (error) {
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ error: String(error) })}\n\n`))
+        controller.close()
+      }
+    }
+  })
+}
+
+export default defineEventHandler(async (event) => {
+  const body = await readBody<ChatRequest>(event)
+
+  // Validate
+  if (!body.apiKey?.trim()) {
+    throw createError({ statusCode: 400, message: 'API key is required. Enter your key in the Playground settings.' })
+  }
+  if (!body.provider || !['gemini', 'openai', 'anthropic'].includes(body.provider)) {
+    throw createError({ statusCode: 400, message: 'Invalid provider. Must be gemini, openai, or anthropic.' })
+  }
+  if (!body.messages || !Array.isArray(body.messages)) {
+    throw createError({ statusCode: 400, message: 'Request body must contain a "messages" array.' })
+  }
+
+  // Set SSE headers
+  setResponseHeaders(event, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive'
+  })
+
+  let stream: ReadableStream
+
+  switch (body.provider) {
+    case 'gemini':
+      stream = await streamGemini(body.apiKey, body.model || 'gemini-2.0-flash', body.messages)
+      break
+    case 'openai':
+      stream = await streamOpenAI(body.apiKey, body.model || 'gpt-4o-mini', body.messages)
+      break
+    case 'anthropic':
+      stream = await streamAnthropic(body.apiKey, body.model || 'claude-sonnet-4-20250514', body.messages)
+      break
+  }
 
   return sendStream(event, stream)
 })

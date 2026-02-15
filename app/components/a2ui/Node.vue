@@ -29,6 +29,14 @@ import A2uiTable from "~/components/a2ui/Table.vue";
 import A2uiChoicePicker from "~/components/a2ui/ChoicePicker.vue";
 import A2uiSlider from "~/components/a2ui/Slider.vue";
 import A2uiDateTimeInput from "~/components/a2ui/DateTimeInput.vue";
+import A2uiAccordion from "~/components/a2ui/Accordion.vue";
+import A2uiAlert from "~/components/a2ui/Alert.vue";
+import A2uiBadge from "~/components/a2ui/Badge.vue";
+import A2uiAvatar from "~/components/a2ui/Avatar.vue";
+import A2uiProgress from "~/components/a2ui/Progress.vue";
+import A2uiTimeline from "~/components/a2ui/Timeline.vue";
+import A2uiSkeleton from "~/components/a2ui/Skeleton.vue";
+import A2uiStepper from "~/components/a2ui/Stepper.vue";
 import A2uiFallback from "~/components/a2ui/Fallback.vue";
 
 const props = defineProps<{
@@ -58,6 +66,14 @@ const componentMap: Record<string, Component> = {
   ChoicePicker: A2uiChoicePicker,
   Slider: A2uiSlider,
   DateTimeInput: A2uiDateTimeInput,
+  Accordion: A2uiAccordion,
+  Alert: A2uiAlert,
+  Badge: A2uiBadge,
+  Avatar: A2uiAvatar,
+  Progress: A2uiProgress,
+  Timeline: A2uiTimeline,
+  Skeleton: A2uiSkeleton,
+  Stepper: A2uiStepper,
 };
 
 const resolvedComponent = computed(() => {

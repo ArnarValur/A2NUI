@@ -13,10 +13,6 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  runtimeConfig: {
-    geminiApiKey: process.env.GEMINI_API_KEY ?? ''
-  },
-
   content: {
     build: {
       markdown: {
