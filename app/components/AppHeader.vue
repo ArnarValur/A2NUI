@@ -3,6 +3,15 @@ import type { ContentNavigationItem } from '@nuxt/content'
 
 const navigation = inject<Ref<ContentNavigationItem[]>>('navigation')
 const { header } = useAppConfig()
+
+// Show Dashboard link only when private layer is loaded
+const router = useRouter()
+const hasDashboard = computed(() => {
+  try {
+    const resolved = router.resolve('/dashboard')
+    return resolved.matched.length > 0 && !resolved.matched[0]?.path?.includes(':')
+  } catch { return false }
+})
 </script>
 
 <template>
@@ -31,6 +40,15 @@ const { header } = useAppConfig()
         to="/getting-started"
         label="Getting Started"
         icon="i-lucide-book-open"
+        color="neutral"
+        variant="ghost"
+      />
+
+      <UButton
+        v-if="hasDashboard"
+        to="/dashboard"
+        label="Dashboard"
+        icon="i-lucide-layout-dashboard"
         color="neutral"
         variant="ghost"
       />

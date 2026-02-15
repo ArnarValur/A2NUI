@@ -1,0 +1,44 @@
+[debug] [2026-02-15T20:01:56.224Z] ----------------------------------------------------------------------
+[debug] [2026-02-15T20:01:56.226Z] Command:       /usr/bin/node /usr/bin/firebase projects:list
+[debug] [2026-02-15T20:01:56.226Z] CLI Version:   15.5.1
+[debug] [2026-02-15T20:01:56.226Z] Platform:      linux
+[debug] [2026-02-15T20:01:56.226Z] Node Version:  v20.20.0
+[debug] [2026-02-15T20:01:56.227Z] Time:          Sun Feb 15 2026 21:01:56 GMT+0100 (Central European Standard Time)
+[debug] [2026-02-15T20:01:56.227Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-02-15T20:01:56.228Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-02-15T20:01:56.267Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-15T20:01:56.267Z] > authorizing via signed-in user (arnarvalur@avj.info)
+[debug] [2026-02-15T20:01:56.270Z] Checked if tokens are valid: false, expires at: 1771124274182
+[debug] [2026-02-15T20:01:56.270Z] Checked if tokens are valid: false, expires at: 1771124274182
+[debug] [2026-02-15T20:01:56.270Z] > refreshing access token with scopes: []
+[debug] [2026-02-15T20:01:56.271Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-15T20:01:56.271Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-15T20:01:56.354Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2026-02-15T20:01:56.355Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[error] Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
+
+For CI servers and headless environments, generate a new token with firebase login:ci
+[error] Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
+
+For CI servers and headless environments, generate a new token with firebase login:ci
+[debug] [2026-02-15T20:01:56.355Z] Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
+
+For CI servers and headless environments, generate a new token with firebase login:ci
+[debug] [2026-02-15T20:01:56.414Z] FirebaseError: Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
+
+For CI servers and headless environments, generate a new token with firebase login:ci
+    at invalidCredentialError (/usr/lib/node_modules/firebase-tools/lib/auth.js:177:12)
+    at refreshTokens (/usr/lib/node_modules/firebase-tools/lib/auth.js:590:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAccessToken (/usr/lib/node_modules/firebase-tools/lib/apiv2.js:49:18)
+    at async Client.addAuthHeader (/usr/lib/node_modules/firebase-tools/lib/apiv2.js:179:21)
+    at async Client.request (/usr/lib/node_modules/firebase-tools/lib/apiv2.js:126:34)
+    at async getProjectPage (/usr/lib/node_modules/firebase-tools/lib/management/projects.js:287:17)
+    at async getFirebaseProjectPage (/usr/lib/node_modules/firebase-tools/lib/management/projects.js:304:23)
+    at async listFirebaseProjects (/usr/lib/node_modules/firebase-tools/lib/management/projects.js:333:29)
+    at async Command.actionFn (/usr/lib/node_modules/firebase-tools/lib/commands/projects-list.js:51:20)
+[error] 
+[error] Error: Failed to list Firebase projects. See firebase-debug.log for more info.
+[debug] [2026-02-15T20:01:56.581Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-02-15T20:01:56.582Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
