@@ -14,4 +14,5 @@ conductor/
 *.code-workspace
 node_modules/
 .nuxt/
+.data/
 .env
