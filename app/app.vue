@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import type { ContentNavigationItem } from '@nuxt/content'
 
+const route = useRoute()
 const { seo } = useAppConfig()
+
+const isFullscreenPage = computed(() => route.path === '/playground' || route.path === '/agent')
 
 const { data: navigation } = await useAsyncData('navigation', () => queryCollectionNavigation('docs'))
 const { data: files } = useLazyAsyncData('search', () => queryCollectionSearchSections('docs'), {
@@ -41,7 +44,7 @@ provide('navigation', navigation)
       </NuxtLayout>
     </UMain>
 
-    <AppFooter />
+    <AppFooter v-if="!isFullscreenPage" />
 
     <ClientOnly>
       <LazyUContentSearch

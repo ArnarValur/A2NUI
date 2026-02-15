@@ -28,6 +28,14 @@ const { header } = useAppConfig()
 
     <template #right>
       <UButton
+        to="/getting-started"
+        label="Getting Started"
+        icon="i-lucide-book-open"
+        color="neutral"
+        variant="ghost"
+      />
+
+      <UButton
         to="/playground"
         label="Playground"
         icon="i-lucide-flask-conical"

@@ -1,60 +1,33 @@
-# Nuxt Starter Template
+# A2NUI
 
-[![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
+A Vue/Nuxt renderer for the [A2UI protocol](https://github.com/nicholasgasior/a2ui) (AI-to-UI). It takes AI-generated JSONL streams and renders them as native [Nuxt UI](https://ui.nuxt.com) components.
 
-Use this template to get started with [Nuxt UI](https://ui.nuxt.com) quickly.
+> **Status:** Active development — not production-ready. Built as a sandbox for exploring agentic UI patterns. Contributions and forks welcome.
 
-- [Live demo](https://starter-template.nuxt.dev/)
-- [Documentation](https://ui.nuxt.com/docs/getting-started/installation/nuxt)
+## What it does
 
-<a href="https://starter-template.nuxt.dev/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png">
-    <img alt="Nuxt Starter Template" src="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png" width="830" height="466">
-  </picture>
-</a>
+- Receives A2UI v0.10 protocol messages (JSONL)
+- Maps standard catalog components → Nuxt UI widgets
+- Renders progressively as the AI streams
 
-> The starter template for Vue is on https://github.com/nuxt-ui-templates/starter-vue.
-
-## Quick Start
-
-```bash [Terminal]
-npm create nuxt@latest -- -t github:nuxt-ui-templates/starter
-```
-
-## Deploy your own
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=starter&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fstarter&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fstarter-dark.png&demo-url=https%3A%2F%2Fstarter-template.nuxt.dev%2F&demo-title=Nuxt%20Starter%20Template&demo-description=A%20minimal%20template%20to%20get%20started%20with%20Nuxt%20UI.)
+**20 components** currently supported — forms, layout, data display, overlays, media.
 
 ## Setup
 
-Make sure to install the dependencies:
-
 ```bash
 pnpm install
+cp .env.example .env  # add your Gemini API key
+pnpm dev              # http://localhost:3000
 ```
 
-## Development Server
+## Stack
 
-Start the development server on `http://localhost:3000`:
+Nuxt 4 · Nuxt UI 3 · TypeScript · Tailwind CSS 4 · A2UI v0.10
 
-```bash
-pnpm dev
-```
+## Contributing
 
-## Production
+Fork it, break it, improve it. PRs and issues are open.
 
-Build the application for production:
+## License
 
-```bash
-pnpm build
-```
-
-Locally preview production build:
-
-```bash
-pnpm preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+[MIT](LICENSE)
