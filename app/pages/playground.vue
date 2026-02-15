@@ -14,78 +14,55 @@ useHead({ title: 'A2NUI Playground' })
 // --- A2UI Processor ---
 const { surfaces, feed, clear: clearSurfaces } = useA2uiSurface()
 
-// --- BYOK Provider Config ---
-type Provider = 'gemini' | 'openai' | 'anthropic'
-
-const providers = [
-  { label: 'Gemini', value: 'gemini' as Provider, icon: 'i-simple-icons-google' },
-  { label: 'OpenAI', value: 'openai' as Provider, icon: 'i-simple-icons-openai' },
-  { label: 'Anthropic', value: 'anthropic' as Provider, icon: 'i-lucide-bot' }
+// --- Gemini-only BYOK Config ---
+const geminiModels = [
+  { label: 'Gemini 2.0 Flash', value: 'gemini-2.0-flash' },
+  { label: 'Gemini 2.5 Flash', value: 'gemini-2.5-flash' },
+  { label: 'Gemini 2.5 Flash Lite', value: 'gemini-2.5-flash-lite' },
+  { label: 'Gemini 2.5 Pro', value: 'gemini-2.5-pro' },
+  { label: 'Gemini 3 Flash', value: 'gemini-3-flash-preview' },
+  { label: 'Gemini 3 Pro', value: 'gemini-3-pro-preview' }
 ]
 
-const modelsByProvider: Record<Provider, Array<{ label: string, value: string }>> = {
-  gemini: [
-    { label: 'Gemini 2.0 Flash', value: 'gemini-2.0-flash' },
-    { label: 'Gemini 2.5 Flash', value: 'gemini-2.5-flash-preview-05-20' },
-    { label: 'Gemini 2.5 Pro', value: 'gemini-2.5-pro-preview-05-06' }
-  ],
-  openai: [
-    { label: 'GPT-4o Mini', value: 'gpt-4o-mini' },
-    { label: 'GPT-4o', value: 'gpt-4o' },
-    { label: 'GPT-4.1 Mini', value: 'gpt-4.1-mini' },
-    { label: 'GPT-4.1', value: 'gpt-4.1' }
-  ],
-  anthropic: [
-    { label: 'Claude Haiku 3.5', value: 'claude-3-5-haiku-20241022' },
-    { label: 'Claude Sonnet 4', value: 'claude-sonnet-4-20250514' }
-  ]
-}
-
-const selectedProvider = ref<Provider>('gemini')
 const selectedModel = ref('gemini-2.0-flash')
 const apiKey = ref('')
 const settingsOpen = ref(true)
+const hasServerKey = ref(false)
+const hasApiKey = computed(() => apiKey.value.trim().length > 0 || hasServerKey.value)
 
-// Persist provider + model in localStorage, key in sessionStorage (tab-scoped)
-if (import.meta.client) {
-  const saved = localStorage.getItem('a2nui-provider')
-  if (saved && ['gemini', 'openai', 'anthropic'].includes(saved)) {
-    selectedProvider.value = saved as Provider
-    const savedModel = localStorage.getItem('a2nui-model')
-    selectedModel.value = savedModel || modelsByProvider[saved as Provider]![0]!.value
+// Restore persisted state AFTER hydration to avoid SSR mismatch
+onMounted(async () => {
+  const savedModel = localStorage.getItem('a2nui-model')
+  if (savedModel && geminiModels.some(m => m.value === savedModel)) {
+    selectedModel.value = savedModel
   }
+
   const savedKey = sessionStorage.getItem('a2nui-key')
   if (savedKey) {
     apiKey.value = savedKey
     settingsOpen.value = false
   }
-}
 
-watch(selectedProvider, (p) => {
-  selectedModel.value = modelsByProvider[p]![0]!.value
-  if (import.meta.client) {
-    localStorage.setItem('a2nui-provider', p)
-  }
+  // Check if server has a Gemini key configured
+  try {
+    const { hasServerKey: serverKey } = await $fetch<{ hasServerKey: boolean }>('/api/a2ui/status')
+    if (serverKey) {
+      hasServerKey.value = true
+      settingsOpen.value = false
+    }
+  } catch { /* ignore — BYOK required */ }
 })
 
 watch(selectedModel, (m) => {
-  if (import.meta.client) {
-    localStorage.setItem('a2nui-model', m)
-  }
+  if (import.meta.client) localStorage.setItem('a2nui-model', m)
 })
 
 watch(apiKey, (k) => {
   if (import.meta.client) {
-    if (k.trim()) {
-      sessionStorage.setItem('a2nui-key', k)
-    } else {
-      sessionStorage.removeItem('a2nui-key')
-    }
+    if (k.trim()) sessionStorage.setItem('a2nui-key', k)
+    else sessionStorage.removeItem('a2nui-key')
   }
 })
-
-const availableModels = computed(() => modelsByProvider[selectedProvider.value])
-const hasApiKey = computed(() => apiKey.value.trim().length > 0)
 
 // --- Chat State ---
 interface ChatMessage {
@@ -123,6 +100,7 @@ const supportedComponents = [
   { name: 'Badge', icon: 'i-lucide-tag', category: 'Element' },
   { name: 'Button', icon: 'i-lucide-mouse-pointer-click', category: 'Element' },
   { name: 'Card', icon: 'i-lucide-credit-card', category: 'Layout' },
+  { name: 'Carousel', icon: 'i-lucide-gallery-horizontal', category: 'Data' },
   { name: 'CheckBox', icon: 'i-lucide-square-check', category: 'Form' },
   { name: 'ChoicePicker', icon: 'i-lucide-list', category: 'Form' },
   { name: 'Column', icon: 'i-lucide-columns-2', category: 'Layout' },
@@ -134,6 +112,7 @@ const supportedComponents = [
   { name: 'Modal', icon: 'i-lucide-app-window', category: 'Overlay' },
   { name: 'Progress', icon: 'i-lucide-loader', category: 'Element' },
   { name: 'Row', icon: 'i-lucide-rows-2', category: 'Layout' },
+  { name: 'ScrollArea', icon: 'i-lucide-scroll-text', category: 'Data' },
   { name: 'Slideover', icon: 'i-lucide-panel-right', category: 'Overlay' },
   { name: 'Slider', icon: 'i-lucide-sliders-horizontal', category: 'Form' },
   { name: 'Skeleton', icon: 'i-lucide-bone', category: 'Element' },
@@ -190,7 +169,7 @@ async function handleSubmit() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        provider: selectedProvider.value,
+        provider: 'gemini',
         apiKey: apiKey.value,
         model: selectedModel.value,
         messages: apiMessages
@@ -338,22 +317,13 @@ const chatUiMessages = computed(() => {
       <div v-if="settingsOpen" class="border-b border-default px-4 py-2 bg-elevated/50">
         <div class="flex items-center gap-3 flex-wrap">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-medium text-muted">Provider</span>
-            <USelectMenu
-              v-model="selectedProvider"
-              :items="providers"
-              value-key="value"
-              class="w-36"
-              size="xs"
-            />
-          </div>
-          <div class="flex items-center gap-2">
+            <UIcon name="i-simple-icons-google" class="size-4 text-muted" />
             <span class="text-xs font-medium text-muted">Model</span>
             <USelectMenu
               v-model="selectedModel"
-              :items="availableModels"
+              :items="geminiModels"
               value-key="value"
-              class="w-48"
+              class="w-52"
               size="xs"
             />
           </div>
@@ -362,7 +332,7 @@ const chatUiMessages = computed(() => {
             <UInput
               v-model="apiKey"
               type="password"
-              placeholder="Paste your API key here"
+              :placeholder="hasServerKey ? 'Server key active — override with BYOK' : 'Paste your Gemini API key'"
               size="xs"
               class="flex-1"
               :color="hasApiKey ? 'neutral' : 'error'"
@@ -472,7 +442,7 @@ const chatUiMessages = computed(() => {
             <form class="flex gap-2" @submit.prevent="handleSubmit">
               <UTextarea
                 v-model="input"
-                placeholder="Ask Gemini to build you a UI..."
+                placeholder="Ask Gemini to build a UI..."
                 :rows="1"
                 autoresize
                 class="flex-1"

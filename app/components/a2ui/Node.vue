@@ -37,6 +37,8 @@ import A2uiProgress from "~/components/a2ui/Progress.vue";
 import A2uiTimeline from "~/components/a2ui/Timeline.vue";
 import A2uiSkeleton from "~/components/a2ui/Skeleton.vue";
 import A2uiStepper from "~/components/a2ui/Stepper.vue";
+import A2uiScrollArea from "~/components/a2ui/ScrollArea.vue";
+import A2uiCarousel from "~/components/a2ui/Carousel.vue";
 import A2uiFallback from "~/components/a2ui/Fallback.vue";
 
 const props = defineProps<{
@@ -74,6 +76,8 @@ const componentMap: Record<string, Component> = {
   Timeline: A2uiTimeline,
   Skeleton: A2uiSkeleton,
   Stepper: A2uiStepper,
+  ScrollArea: A2uiScrollArea,
+  Carousel: A2uiCarousel,
 };
 
 const resolvedComponent = computed(() => {

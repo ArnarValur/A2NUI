@@ -55,6 +55,11 @@ Each component is an object with "id", "component" (type name), and type-specifi
 - **Slider**: { id, component: "Slider", value: 50, min: 0, max: 100, label?: "string" }
 - **DateTimeInput**: { id, component: "DateTimeInput", value: "", enableDate?: true, enableTime?: false, min?: "2026-01-01", max?: "2026-12-31", label?: "string" }
 
+### Data
+- **ScrollArea**: { id, component: "ScrollArea", items: [{ title: "string", description?: "string", status?: "pending"|"confirmed"|"cancelled", meta?: "string", icon?: "string" }], orientation?: "vertical"|"horizontal", height?: "h-96"|"h-64"|"h-128", virtualize?: boolean }
+- **Carousel**: { id, component: "Carousel", items: ["url1", "url2"] | [{ src: "url", alt?: "string", caption?: "string" }], arrows?: boolean, dots?: boolean, loop?: boolean, autoplay?: boolean | { delay: number }, columns?: 1|2|3|4, orientation?: "horizontal"|"vertical" }
+- **Table**: { id, component: "Table", columns: [{ key: "string", label: "string" }], rows: [{ key: "value" }], caption?: "string", striped?: boolean }
+
 ## Rules
 1. Each JSON line must be a complete, valid JSON object — no partial objects
 2. The "root" component is the entry point of the UI tree
@@ -263,8 +268,11 @@ async function streamAnthropic(apiKey: string, model: string, messages: ChatRequ
 export default defineEventHandler(async (event) => {
   const body = await readBody<ChatRequest>(event)
 
-  // Validate
-  if (!body.apiKey?.trim()) {
+  // Resolve API key: BYOK takes priority, then fall back to server env key (Gemini only)
+  const envGeminiKey = process.env.GEMINI_API_KEY || ''
+  const effectiveApiKey = body.apiKey?.trim() || (body.provider === 'gemini' ? envGeminiKey : '')
+
+  if (!effectiveApiKey) {
     throw createError({ statusCode: 400, message: 'API key is required. Enter your key in the Playground settings.' })
   }
   if (!body.provider || !['gemini', 'openai', 'anthropic'].includes(body.provider)) {
@@ -285,7 +293,7 @@ export default defineEventHandler(async (event) => {
 
   switch (body.provider) {
     case 'gemini':
-      stream = await streamGemini(body.apiKey, body.model || 'gemini-2.0-flash', body.messages)
+      stream = await streamGemini(effectiveApiKey, body.model || 'gemini-2.0-flash', body.messages)
       break
     case 'openai':
       stream = await streamOpenAI(body.apiKey, body.model || 'gpt-4o-mini', body.messages)
