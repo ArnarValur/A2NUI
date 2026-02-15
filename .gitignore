@@ -11,3 +11,5 @@ A2UI Repo*/
 conductor/
 .docs*/
 *.code-workspace
+node_modules/
+.nuxt/
