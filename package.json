@@ -14,15 +14,18 @@
     "@google/genai": "^1.41.0",
     "@iconify-json/lucide": "^1.2.89",
     "@iconify-json/simple-icons": "^1.2.70",
-    "@nuxt/content": "^3.11.2",
     "@nuxt/image": "^2.0.0",
     "@nuxt/ui": "^4.4.0",
-    "better-sqlite3": "^12.6.2",
     "nuxt": "^4.3.1",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.3.6",
+    "zod-to-json-schema": "^3.25.1"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.14.0",
+    "@oxc-minify/binding-linux-x64-gnu": "0.112.0",
+    "@oxc-parser/binding-linux-x64-gnu": "^0.112.0",
+    "@oxc-transform/binding-linux-x64-gnu": "0.112.0",
     "eslint": "^10.0.0",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.2.4"

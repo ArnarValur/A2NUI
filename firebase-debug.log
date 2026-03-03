@@ -1,44 +1,144 @@
-[debug] [2026-02-15T20:01:56.224Z] ----------------------------------------------------------------------
-[debug] [2026-02-15T20:01:56.226Z] Command:       /usr/bin/node /usr/bin/firebase projects:list
-[debug] [2026-02-15T20:01:56.226Z] CLI Version:   15.5.1
-[debug] [2026-02-15T20:01:56.226Z] Platform:      linux
-[debug] [2026-02-15T20:01:56.226Z] Node Version:  v20.20.0
-[debug] [2026-02-15T20:01:56.227Z] Time:          Sun Feb 15 2026 21:01:56 GMT+0100 (Central European Standard Time)
-[debug] [2026-02-15T20:01:56.227Z] ----------------------------------------------------------------------
-[debug] 
-[debug] [2026-02-15T20:01:56.228Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
-[debug] [2026-02-15T20:01:56.267Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2026-02-15T20:01:56.267Z] > authorizing via signed-in user (arnarvalur@avj.info)
-[debug] [2026-02-15T20:01:56.270Z] Checked if tokens are valid: false, expires at: 1771124274182
-[debug] [2026-02-15T20:01:56.270Z] Checked if tokens are valid: false, expires at: 1771124274182
-[debug] [2026-02-15T20:01:56.270Z] > refreshing access token with scopes: []
-[debug] [2026-02-15T20:01:56.271Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
-[debug] [2026-02-15T20:01:56.271Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2026-02-15T20:01:56.354Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
-[debug] [2026-02-15T20:01:56.355Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[error] Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
-
-For CI servers and headless environments, generate a new token with firebase login:ci
-[error] Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
-
-For CI servers and headless environments, generate a new token with firebase login:ci
-[debug] [2026-02-15T20:01:56.355Z] Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
-
-For CI servers and headless environments, generate a new token with firebase login:ci
-[debug] [2026-02-15T20:01:56.414Z] FirebaseError: Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
-
-For CI servers and headless environments, generate a new token with firebase login:ci
-    at invalidCredentialError (/usr/lib/node_modules/firebase-tools/lib/auth.js:177:12)
-    at refreshTokens (/usr/lib/node_modules/firebase-tools/lib/auth.js:590:15)
-    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at async getAccessToken (/usr/lib/node_modules/firebase-tools/lib/apiv2.js:49:18)
-    at async Client.addAuthHeader (/usr/lib/node_modules/firebase-tools/lib/apiv2.js:179:21)
-    at async Client.request (/usr/lib/node_modules/firebase-tools/lib/apiv2.js:126:34)
-    at async getProjectPage (/usr/lib/node_modules/firebase-tools/lib/management/projects.js:287:17)
-    at async getFirebaseProjectPage (/usr/lib/node_modules/firebase-tools/lib/management/projects.js:304:23)
-    at async listFirebaseProjects (/usr/lib/node_modules/firebase-tools/lib/management/projects.js:333:29)
-    at async Command.actionFn (/usr/lib/node_modules/firebase-tools/lib/commands/projects-list.js:51:20)
-[error] 
-[error] Error: Failed to list Firebase projects. See firebase-debug.log for more info.
-[debug] [2026-02-15T20:01:56.581Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
-[debug] [2026-02-15T20:01:56.582Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2026-02-22T16:25:57.999Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-22T16:25:58.002Z] > authorizing via signed-in user (arnarvalur@avj.info)
+[debug] [2026-02-22T16:25:58.003Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.003Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.003Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-22T16:25:58.004Z] > authorizing via signed-in user (arnarvalur@avj.info)
+[debug] [2026-02-22T16:25:58.004Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.004Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.005Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo [none]
+[debug] [2026-02-22T16:25:58.007Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo [none]
+[debug] [2026-02-22T16:25:58.406Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo 200
+[debug] [2026-02-22T16:25:58.406Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo {"name":"projects/a2nui-18762/billingInfo","projectId":"a2nui-18762","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-22T16:25:58.412Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.412Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.412Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.413Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.413Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.413Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.414Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.414Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.414Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.415Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.415Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.415Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.415Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.415Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.436Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.436Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.437Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.437Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.437Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firestore.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.437Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firestore.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.438Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/storage.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.438Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/storage.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.440Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.440Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebasedataconnect.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.442Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/identitytoolkit.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.442Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/identitytoolkit.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.443Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/fcm.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.443Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/fcm.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.445Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/cloudfunctions.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.445Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/cloudfunctions.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.447Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseremoteconfig.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.447Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseremoteconfig.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.449Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.449Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseapphosting.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.451Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseio.com [none]
+[debug] [2026-02-22T16:25:58.451Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseio.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.721Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo 200
+[debug] [2026-02-22T16:25:58.721Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo {"name":"projects/a2nui-18762/billingInfo","projectId":"a2nui-18762","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-22T16:25:58.722Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.722Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.722Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.722Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.722Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.723Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.723Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.723Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.723Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.723Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.723Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.723Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.723Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.723Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.728Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.728Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.728Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.728Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:25:58.729Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firestore.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.729Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firestore.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.730Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/storage.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.730Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/storage.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.731Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.731Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebasedataconnect.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.732Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/identitytoolkit.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.733Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/identitytoolkit.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.734Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/fcm.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.734Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/fcm.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.735Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/cloudfunctions.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.735Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/cloudfunctions.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.736Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseremoteconfig.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.736Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseremoteconfig.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.737Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-22T16:25:58.738Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseapphosting.googleapis.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:58.738Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseio.com [none]
+[debug] [2026-02-22T16:25:58.739Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseio.com  x-goog-user-project=a2nui-18762
+[debug] [2026-02-22T16:25:59.338Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseio.com 403
+[debug] [2026-02-22T16:25:59.338Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseio.com [omitted]
+[debug] [2026-02-22T16:25:59.358Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseremoteconfig.googleapis.com 200
+[debug] [2026-02-22T16:25:59.359Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseremoteconfig.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.371Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-22T16:25:59.371Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.375Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/fcm.googleapis.com 200
+[debug] [2026-02-22T16:25:59.375Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/fcm.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.378Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-22T16:25:59.378Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.379Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/storage.googleapis.com 200
+[debug] [2026-02-22T16:25:59.379Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/storage.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.381Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firestore.googleapis.com 200
+[debug] [2026-02-22T16:25:59.381Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firestore.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.381Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/identitytoolkit.googleapis.com 200
+[debug] [2026-02-22T16:25:59.381Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/identitytoolkit.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.384Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/cloudfunctions.googleapis.com 200
+[debug] [2026-02-22T16:25:59.384Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.607Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firestore.googleapis.com 200
+[debug] [2026-02-22T16:25:59.607Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firestore.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.608Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/storage.googleapis.com 200
+[debug] [2026-02-22T16:25:59.608Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/storage.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.643Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-22T16:25:59.644Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.656Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-22T16:25:59.656Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.676Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/cloudfunctions.googleapis.com 200
+[debug] [2026-02-22T16:25:59.676Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2026-02-22T16:25:59.979Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseio.com 403
+[debug] [2026-02-22T16:25:59.979Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseio.com [omitted]
+[debug] [2026-02-22T16:26:00.134Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseremoteconfig.googleapis.com 200
+[debug] [2026-02-22T16:26:00.134Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/firebaseremoteconfig.googleapis.com [omitted]
+[debug] [2026-02-22T16:26:00.146Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/fcm.googleapis.com 200
+[debug] [2026-02-22T16:26:00.146Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/fcm.googleapis.com [omitted]
+[debug] [2026-02-22T16:26:00.215Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/identitytoolkit.googleapis.com 200
+[debug] [2026-02-22T16:26:00.215Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/a2nui-18762/services/identitytoolkit.googleapis.com [omitted]
+[debug] [2026-02-22T16:26:00.239Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-22T16:26:00.240Z] > authorizing via signed-in user (arnarvalur@avj.info)
+[debug] [2026-02-22T16:26:00.240Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:26:00.240Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:26:00.240Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo [none]
+[debug] [2026-02-22T16:26:00.457Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo 200
+[debug] [2026-02-22T16:26:00.457Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo {"name":"projects/a2nui-18762/billingInfo","projectId":"a2nui-18762","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-22T16:26:00.458Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-22T16:26:00.458Z] > authorizing via signed-in user (arnarvalur@avj.info)
+[debug] [2026-02-22T16:26:00.483Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-22T16:26:00.483Z] > authorizing via signed-in user (arnarvalur@avj.info)
+[debug] [2026-02-22T16:26:00.483Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:26:00.483Z] Checked if tokens are valid: true, expires at: 1771780811563
+[debug] [2026-02-22T16:26:00.483Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo [none]
+[debug] [2026-02-22T16:26:01.247Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo 200
+[debug] [2026-02-22T16:26:01.247Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/a2nui-18762/billingInfo {"name":"projects/a2nui-18762/billingInfo","projectId":"a2nui-18762","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-22T16:26:01.248Z] >>> [apiv2][query] POST https://developerknowledge.googleapis.com/mcp [none]
+[debug] [2026-02-22T16:26:01.248Z] >>> [apiv2][body] POST https://developerknowledge.googleapis.com/mcp {"method":"tools/list","jsonrpc":"2.0","id":1}
+[debug] [2026-02-22T16:26:01.457Z] <<< [apiv2][status] POST https://developerknowledge.googleapis.com/mcp 200
+[debug] [2026-02-22T16:26:01.457Z] <<< [apiv2][body] POST https://developerknowledge.googleapis.com/mcp {"id":1,"jsonrpc":"2.0","result":{"tools":[{"annotations":{"destructiveHint":false,"idempotentHint":true,"openWorldHint":false,"readOnlyHint":true},"description":"Use this tool to find documentation about Google developer products.\nThe documents contain official APIs, code snippets, release notes, best\npractices, guides, debugging info, and more. It covers the following\nproducts and domains:\n\n* Android: developer.android.com\n* Apigee: docs.apigee.com\n* Chrome: developer.chrome.com\n* Firebase: firebase.google.com\n* Fuchsia: fuchsia.dev\n* Google AI: ai.google.dev\n* Google Cloud: docs.cloud.google.com\n* Google Developers, Ads, Search, Google Maps, Youtube: developers.google.com\n* Google Home: developers.home.google.com\n* TensorFlow: www.tensorflow.org\n* Web: web.dev\n\nThis tool returns chunks of text, names, and URLs for matching documents.\nIf the returned chunks are not detailed enough to answer the\nuser's question, use `get_document` or `batch_get_documents` with the\n`parent` from this tool's output to retrieve the full document\ncontent.","inputSchema":{"description":"Request schema for search_documents. Use the query field to search for related Google developer documentation.","properties":{"query":{"description":"Required. The raw query string provided by the user, such as \"How to create a Cloud Storage bucket?\".","type":"string"}},"required":["query"],"type":"object"},"name":"search_documents","outputSchema":{"$defs":{"DocumentChunk":{"description":"A DocumentChunk represents a piece of content from a Document in the DeveloperKnowledge corpus. To fetch the entire document content, pass the `parent` to get_document or batch_get_documents.","properties":{"content":{"description":"Output only. The content of the document chunk.","readOnly":true,"type":"string"},"id":{"description":"Output only. The ID of this chunk within the document. The chunk ID is unique within a document, but not globally unique across documents. The chunk ID is not stable and may change over time.","readOnly":true,"type":"string"},"parent":{"description":"Output only. The resource name of the document this chunk is from. Format: `documents/{uri_without_scheme}` Example: `documents/docs.cloud.google.com/storage/docs/creating-buckets`","readOnly":true,"type":"string"}},"type":"object"}},"description":"Response schema for search_documents.","properties":{"results":{"description":"The search results for the given query. Each Document in this list contains a snippet of content relevant to the search query. Use the Document.name field of each result with get_document or batch_get_documents to retrieve the full document content.","items":{"$ref":"#/$defs/DocumentChunk"},"type":"array"}},"type":"object"}},{"annotations":{"destructiveHint":false,"idempotentHint":true,"openWorldHint":false,"readOnlyHint":true},"description":"Use this tool to retrieve the full content of a single document. The\ndocument name should be obtained from the `parent` field of results from a\ncall to the `search_documents` tool. If you need to retrieve multiple\ndocuments, use `batch_get_documents` instead.","inputSchema":{"description":"Request schema for get_document.","properties":{"name":{"description":"Required. The name of the document to retrieve. Format: `documents/{uri_without_scheme}` Example: `documents/docs.cloud.google.com/storage/docs/creating-buckets`","type":"string"}},"required":["name"],"type":"object"},"name":"get_document","outputSchema":{"description":"A Document represents a piece of content from the Developer Knowledge corpus.","properties":{"content":{"description":"Output only. The content of the document in Markdown format. If this document is returned by search_documents, this field contains a snippet of text relevant to the search query. If this document is returned by get_document or batch_get_documents, this field contains the full document content.","readOnly":true,"type":"string"},"description":{"description":"Output only. A description of the document.","readOnly":true,"type":"string"},"name":{"description":"Identifier. The resource name of the document. Format: `documents/{uri_without_scheme}` Example: `documents/docs.cloud.google.com/storage/docs/creating-buckets`","type":"string","x-google-identifier":true},"uri":{"description":"Output only. The URI of the content, such as `https://cloud.google.com/storage/docs/creating-buckets`.","readOnly":true,"type":"string"}},"type":"object"}},{"annotations":{"destructiveHint":false,"idempotentHint":true,"openWorldHint":false,"readOnlyHint":true},"description":"Use this tool to retrieve the full content of up to 20 documents in a\nsingle call. The document names should be obtained from the `parent` field\nof results from a call to the `search_documents` tool. Use this tool\ninstead of calling `get_document` multiple times to fetch multiple\ndocuments.","inputSchema":{"description":"Request schema for batch_get_documents.","properties":{"names":{"description":"Required. The names of the documents to retrieve, as returned by search_documents. A maximum of 20 documents can be retrieved in a batch. The documents are returned in the same order as the `names` in the request. Format: `documents/{uri_without_scheme}` Example: `documents/docs.cloud.google.com/storage/docs/creating-buckets`","items":{"type":"string"},"type":"array"}},"required":["names"],"type":"object"},"name":"batch_get_documents","outputSchema":{"$defs":{"Document":{"description":"A Document represents a piece of content from the Developer Knowledge corpus.","properties":{"content":{"description":"Output only. The content of the document in Markdown format. If this document is returned by search_documents, this field contains a snippet of text relevant to the search query. If this document is returned by get_document or batch_get_documents, this field contains the full document content.","readOnly":true,"type":"string"},"description":{"description":"Output only. A description of the document.","readOnly":true,"type":"string"},"name":{"description":"Identifier. The resource name of the document. Format: `documents/{uri_without_scheme}` Example: `documents/docs.cloud.google.com/storage/docs/creating-buckets`","type":"string","x-google-identifier":true},"uri":{"description":"Output only. The URI of the content, such as `https://cloud.google.com/storage/docs/creating-buckets`.","readOnly":true,"type":"string"}},"type":"object"}},"description":"Response schema for batch_get_documents.","properties":{"documents":{"description":"Documents requested.","items":{"$ref":"#/$defs/Document"},"type":"array"}},"type":"object"}}]}}
+[debug] [2026-02-22T16:26:01.460Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-22T16:26:01.460Z] > authorizing via signed-in user (arnarvalur@avj.info)

@@ -11,7 +11,7 @@ A2UI Repo*/
 .agent/
 conductor/
 .docs*/
-layers/private/
+.private/
 *.code-workspace
 node_modules/
 .nuxt/
